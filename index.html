@@ -106,8 +106,10 @@ const spkEn=t=>`<button class="spk" data-say-en="${String(t).replace(/"/g,'&quot
 document.addEventListener('click',e=>{const en=e.target.closest('[data-say-en]');if(en){e.stopPropagation();sayEn(en.getAttribute('data-say-en'));return}const b=e.target.closest('[data-say]');if(b){e.stopPropagation();say(b.dataset.say)}},true);
 function toast(t,c){const el=document.getElementById('toast');el.textContent=t;el.style.color=c;el.style.display='block';clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',1600)}
 const GOOD=['Đúng rồi! Giỏi quá!','Tuyệt vời!','Hay lắm!'];
-function good(){const t=GOOD[Math.floor(Math.random()*3)];toast('🌟 '+t,'#2d9a42');say(t)}
-function bad(){toast('Sai rồi, thử lại nhé!','#e04848');say('Sai rồi, thử lại nhé')}
+const GOOD_EN=['Great job!','Well done!','Excellent!'];
+let speakEn=false;
+function good(){if(speakEn){const t=GOOD_EN[Math.floor(Math.random()*GOOD_EN.length)];toast('🌟 '+t,'#2d9a42');sayEn(t);return}const t=GOOD[Math.floor(Math.random()*3)];toast('🌟 '+t,'#2d9a42');say(t)}
+function bad(){if(speakEn){toast('Try again!','#e04848');sayEn('Try again!');return}toast('Sai rồi, thử lại nhé!','#e04848');say('Sai rồi, thử lại nhé')}
 const norm=s=>s.toLowerCase().replace(/\s+/g,' ').trim();
 const opMap={'+':'cộng','=':'bằng'};const readEq=s=>s.replace(/\+/g,' cộng ').replace(/=/g,' bằng ');
 const pics=(k,n)=>'<span class="pics">'+S[k].repeat(n)+'</span>';
@@ -190,7 +192,7 @@ if(HASHES.has(await sha(v))){sessionStorage.setItem('vh1','1');home();say('Chào
 go.onclick=tryIt;pw.onkeydown=e=>{if(e.key==='Enter')tryIt()};pw.focus()}
 function inferMon(l){return /^Toán/.test(l.t)?'toan':'tv'}
 function cardHTML(l,i){return `<div class="lc" style="background:${l.c}" data-go="${i}">${spk((l.tag||('Bài '+(i+1)))+'. '+l.t)}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px">${l.ic}</span><div><div style="opacity:.9">${l.tag||('Bài '+(i+1))}</div><h3>${l.t}</h3><div style="font-size:18px">${l.sub}</div></div></div>`}
-function home(){location.hash='';
+function home(){speakEn=false;location.hash='';
 const locked=sessionStorage.getItem('vh1en')!=='1';
 app.innerHTML=`<div class="hero"><img src="ui/hero.jpg" alt="Vui học lớp 1. Hiện có Tuần 7, Tuần 8 và Tuần 9.">${spk('Chào em! Hiện có Tuần 7, Tuần 8 và Tuần 9. Bé chọn môn Toán, Tiếng Việt, hoặc English Ms. Huyền nhé!')}</div>
 <div class="grid" style="margin-top:22px">
@@ -224,14 +226,14 @@ const lim=LIMITED[h];
 if(lim){try{const r=await fetch('https://abacus.jasoncameron.dev/hit/'+lim.ns+'/'+lim.key);const data=await r.json();if((data&&data.value)>lim.max){msg.textContent='Mã này đã hết lượt dùng rồi, em xin thầy mã khác nhé!';return}unlock()}catch(err){unlock()}return}
 msg.textContent='Mã chưa đúng rồi, em kiểm tra lại nhé!';pw.classList.add('bad');setTimeout(()=>pw.classList.remove('bad'),900)};
 go.onclick=tryIt;pw.onkeydown=e=>{if(e.key==='Enter')tryIt()};document.getElementById('bk2').onclick=home;pw.focus()}
-function englishHome(){const cols=['#FF6B6B','#6BCB77','#5c6bc0','#FF9F43','#9B59B6','#4D96FF','#2d9a42','#e04848','#7c4dff'];
+function englishHome(){speakEn=false;const cols=['#FF6B6B','#6BCB77','#5c6bc0','#FF9F43','#9B59B6','#4D96FF','#2d9a42','#e04848','#7c4dff'];
 app.innerHTML=`<div class="top"><button class="back" id="bk">⬅ Về nhà</button><h1 style="color:#5c6bc0;margin:0">English Ms. Huyền ${spk('English Ms. Huyền')}</h1></div>
 <p>Ôn tập theo sách Tiếng Anh 1 Global Success, tuần 1 đến tuần 9. Bé nghe, nhắc lại và làm bài nhỏ nhé!</p>
 <div class="en-week">`+EN_WEEKS.map((w,i)=>`<div class="en-w" data-ew="${w.week}" style="border-top:10px solid ${cols[i%cols.length]}"><div style="opacity:.8">Tuần ${w.week}</div><b>${w.title}</b><div>${w.letter} ${w.sound}</div></div>`).join('')+`</div>`;
 document.getElementById('bk').onclick=home;
 document.querySelectorAll('[data-ew]').forEach(c=>c.onclick=()=>englishWeek(+c.dataset.ew))}
 function englishWeek(n){const w=EN_WEEKS.find(x=>x.week===n);if(!w){englishHome();return}
-total=0;done=0;
+speakEn=true;total=0;done=0;
 const rhyme=(w.rhyme||[]).join(' ');
 const wordsHtml=w.words.map(word=>`<div class="en-word" data-say-en="${word}"><img src="en/${word}.jpg" alt="${word}" onerror="this.style.display='none'"><strong>${word}</strong></div>`).join('');
 const sentHtml=w.sentences.map(s=>`<div class="row"><button class="chip" data-say-en="${s.replace(/"/g,'&quot;')}">🔊 ${s}</button></div>`).join('');
@@ -266,6 +268,6 @@ m.querySelectorAll('[data-ml]').forEach(b=>b.onclick=()=>{if(b.classList.contain
 m.querySelectorAll('[data-mr]').forEach(b=>b.onclick=()=>{if(b.classList.contains('done'))return;if(!sel){say(b.dataset.mr);return}
 if(P[sel.dataset.ml]===b.dataset.mr){sel.classList.remove('sel');sel.classList.add('done');b.classList.add('done');sel=null;good();mark()}else{b.classList.add('wrong');bad();setTimeout(()=>b.classList.remove('wrong'),900)}})});
 }
-function celebrate(){const d=document.createElement('div');d.className='card celebrate';d.innerHTML=`<div class="stars">🌟🎉🌟</div><h1 style="color:var(--co)">Hoan hô! Em đã hoàn thành bài!</h1><button class="big" style="background:var(--gr)">Về trang chủ 🏠</button>`;d.querySelector('button').onclick=home;app.appendChild(d);d.scrollIntoView({behavior:'smooth'});say('Hoan hô! Em đã hoàn thành bài học. Giỏi lắm!')}
+function celebrate(){const d=document.createElement('div');d.className='card celebrate';if(speakEn){d.innerHTML=`<div class="stars">🌟🎉🌟</div><h1 style="color:var(--co)">Great job! You finished!</h1><button class="big" style="background:var(--gr)">Về các tuần 🏠</button>`;d.querySelector('button').onclick=englishHome;app.appendChild(d);d.scrollIntoView({behavior:'smooth'});sayEn('Great job! You finished the lesson. Well done!');return}d.innerHTML=`<div class="stars">🌟🎉🌟</div><h1 style="color:var(--co)">Hoan hô! Em đã hoàn thành bài!</h1><button class="big" style="background:var(--gr)">Về trang chủ 🏠</button>`;d.querySelector('button').onclick=home;app.appendChild(d);d.scrollIntoView({behavior:'smooth'});say('Hoan hô! Em đã hoàn thành bài học. Giỏi lắm!')}
 route();
 </script></body></html>
