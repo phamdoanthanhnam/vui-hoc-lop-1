@@ -70,7 +70,7 @@ function ok(){return true;}
 // ===== HOME
 var W=8;
 function home(){if(MON==='toan'){location.href='index.html#toan';return}if(MON==='tv'){location.href='index.html#tv';return}week(8);}
-function week(w){if(!ok())return gate();W=w;h('<div class="hero"><div class="mascot">'+(w==8?'📘':'📗')+'</div><div><h1>Ôn tập tuần '+w+'</h1><p>Bé chọn môn học nhé!</p></div></div><div class="big2"><button class="subj m" onclick="mathMenu()">➕ Toán</button><button class="subj v" onclick="tvMenu()">📖 Tiếng Việt</button></div><button class="btn ghost" onclick="location.href='index.html'">⬅ Về trang chủ</button>');}
+function week(w){if(!ok())return gate();W=w;h('<div class="hero"><div class="mascot">'+(w==8?'📘':'📗')+'</div><div><h1>Ôn tập tuần '+w+'</h1><p>Bé chọn môn học nhé!</p></div></div><div class="big2"><button class="subj m" onclick="mathMenu()">➕ Toán</button><button class="subj v" onclick="tvMenu()">📖 Tiếng Việt</button></div><button class="btn ghost" onclick="location.href=\'index.html\'">⬅ Về trang chủ</button>');}
 // ===== TOÁN
 var PIC=['🍎','🐥','⭐','🎈','🐟','🌸','🍓','🚗','🐞','🍌'];
 function gen(t){var a,b,q;
