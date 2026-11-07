@@ -60,7 +60,8 @@ function fb(ok,msg){var f=$('#fb');if(!f)return;f.className='fb '+(ok?'ok':'no')
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function rnd(n){return Math.floor(Math.random()*n);}
-function menu(title,items){h('<h2>'+title+'</h2><div class="grid">'+items.map(function(i){return '<button class="card" onclick="'+i[2]+'"><span class="ic">'+i[0]+'</span>'+i[1]+'</button>'}).join('')+'</div><button class="btn ghost" onclick="week(W)">⬅ Tuần '+W+'</button>');}
+var MON=(function(){try{return new URLSearchParams(location.search).get('mon')}catch(e){return null}})();
+function menu(title,items){var back=MON?'onclick="home()">⬅ Về '+(MON==='toan'?'Toán':'Tiếng Việt'):'onclick="week(W)">⬅ Tuần '+W;h('<h2>'+title+'</h2><div class="grid">'+items.map(function(i){return '<button class="card" onclick="'+i[2]+'"><span class="ic">'+i[0]+'</span>'+i[1]+'</button>'}).join('')+'</div><button class="btn ghost" '+back+'</button>');}
 // ===== CỔNG MÃ
 function sha(t){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(t)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return x.toString(16).padStart(2,'0')}).join('')});}
 function gate(){h('<div class="hero"><div class="mascot">🔐</div><div><h1>Ôn tập Lớp 1</h1><p>Nhập mã truy cập để vào học</p></div><div class="mascot">🐻</div></div><label class="namebox center">Mã truy cập:<br><input id="code" maxlength="12" autocomplete="off" style="text-transform:uppercase;letter-spacing:6px;text-align:center"></label><div class="center"><button class="btn go big" id="go">Vào học ▶</button></div><div id="fb" class="fb"></div>');
@@ -68,7 +69,7 @@ function gate(){h('<div class="hero"><div class="mascot">🔐</div><div><h1>Ôn 
 function ok(){return true;}
 // ===== HOME
 var W=8;
-function home(){week(8);}
+function home(){if(MON==='toan'){location.href='index.html#toan';return}if(MON==='tv'){location.href='index.html#tv';return}week(8);}
 function week(w){if(!ok())return gate();W=w;h('<div class="hero"><div class="mascot">'+(w==8?'📘':'📗')+'</div><div><h1>Ôn tập tuần '+w+'</h1><p>Bé chọn môn học nhé!</p></div></div><div class="big2"><button class="subj m" onclick="mathMenu()">➕ Toán</button><button class="subj v" onclick="tvMenu()">📖 Tiếng Việt</button></div><button class="btn ghost" onclick="location.href='index.html'">⬅ Về trang chủ</button>');}
 // ===== TOÁN
 var PIC=['🍎','🐥','⭐','🎈','🐟','🌸','🍓','🚗','🐞','🍌'];
@@ -136,5 +137,5 @@ function tvChalNext(f){if(!f)tchal.i++;if(tchal.i>=10)return tvChalEnd();tvQ(['g
 function tvChalEnd(){var n=tchal.res.filter(function(r){return r.ok}).length,st=n>=9?3:n>=6?2:n>=3?1:0,bad=tchal.res.filter(function(r){return !r.ok});addStar(st);if(n===10)S.badges['t'+W]=1;save();
  h('<h2>🏅 Kết quả – Tiếng Việt tuần '+W+'</h2><div class="res">'+'⭐'.repeat(st)+'☆'.repeat(3-st)+'<p>Bé đúng <b>'+n+'/10</b> câu</p></div>'+(bad.length?'<h3>Xem lại câu sai:</h3><ul class="rev">'+bad.map(function(r){return '<li>'+esc(r.q.rev)+'</li>'}).join('')+'</ul>':'<p class="center">Giỏi quá! Không sai câu nào 🎉</p>')+'<button class="btn go" onclick="tvChal()">🔄 Chơi lại</button><button class="btn ghost" onclick="tvMenu()">⬅ Bài khác</button>');tchal=null;if(n>=6)confetti();}
 function progress(){var b=S.badges;h('<h2>🏆 Tiến bộ của em</h2><div class="pane"><p>⭐ Tổng số sao: <b>'+S.stars+'</b></p><table><tr><th></th><th>Tuần 8</th><th>Tuần 9</th></tr><tr><td>Toán 10/10</td><td>'+(b.m8?'🏅':'–')+'</td><td>'+(b.m9?'🏅':'–')+'</td></tr><tr><td>Tiếng Việt 10/10</td><td>'+(b.t8?'🏅':'–')+'</td><td>'+(b.t9?'🏅':'–')+'</td></tr></table><p class="hint">Dữ liệu chỉ lưu trên máy này.</p></div><button class="btn ghost" onclick="home()">⬅ Trang chủ</button>');}
-$('#mute').onclick=function(){S.mute=!S.mute;save();};save();week(8);
+$('#mute').onclick=function(){S.mute=!S.mute;save();};save();W=8;if(MON==='toan')mathMenu();else if(MON==='tv')tvMenu();else week(8);
 </script></body></html>
