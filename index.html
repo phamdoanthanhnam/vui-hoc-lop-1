@@ -43,6 +43,15 @@ input:focus{outline:none;border-color:var(--bl)}
 footer{text-align:center;font-size:16px;opacity:.6;padding:20px}
 .hide{display:none}
 @media(max-width:600px){body{font-size:20px}.eq{font-size:24px}.num{width:68px}}
+
+body{background:linear-gradient(180deg,#FFF6E5 0%,#FFE4C4 60%,#FFD3A8 100%);background-attachment:fixed}
+.hero{position:relative;border-radius:32px;overflow:hidden;box-shadow:0 16px 40px rgba(80,60,120,.16);margin:4px 0 8px}
+.hero img{width:100%;height:auto;display:block}
+.hero .spk{position:absolute;top:16px;right:16px;z-index:2}
+.lc.vis{padding:0;overflow:hidden;aspect-ratio:16/9;min-height:0;background:#fff;box-shadow:0 12px 28px rgba(80,60,120,.16)}
+.lc.vis img{width:100%;height:100%;object-fit:cover;display:block}
+.lc.vis .spk{z-index:2}
+.badge-ok{position:absolute;left:16px;bottom:16px;background:#fff;color:#2d9a42;border-radius:999px;padding:6px 14px;font-size:16px;font-weight:800;box-shadow:0 4px 0 rgba(0,0,0,.08)}
 </style></head><body>
 <svg class="deco" style="top:6%;left:3%" width="130" viewBox="0 0 100 60"><path d="M25 50a18 18 0 0 1 2-36 22 22 0 0 1 42 4 15 15 0 0 1 6 32z" fill="#fff"/></svg>
 <svg class="deco" style="top:12%;right:4%;animation-delay:2s" width="70" viewBox="0 0 100 100"><path d="M50 5l13 30 32 3-24 21 7 32-28-17-28 17 7-32L5 38l32-3z" fill="#FFD93D"/></svg>
@@ -169,11 +178,11 @@ function inferMon(l){return /^Toán/.test(l.t)?'toan':'tv'}
 function cardHTML(l,i){return `<div class="lc" style="background:${l.c}" data-go="${i}">${spk((l.tag||('Bài '+(i+1)))+'. '+l.t)}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px">${l.ic}</span><div><div style="opacity:.9">${l.tag||('Bài '+(i+1))}</div><h3>${l.t}</h3><div style="font-size:18px">${l.sub}</div></div></div>`}
 function home(){location.hash='';
 const locked=sessionStorage.getItem('vh1en')!=='1';
-app.innerHTML=`<div class="top">${bear.replace('width="120"','width="80"')}<div><h1 style="color:var(--co)">Vui học lớp 1</h1><p style="margin:0">Hiện có Tuần 7, Tuần 8 và Tuần 9. Bé chọn môn học nhé! ${spk('Chào em! Hiện có Tuần 7, Tuần 8 và Tuần 9. Bé chọn môn Toán, Tiếng Việt, hoặc English cô Huyền nhé!')}</p></div></div>
+app.innerHTML=`<div class="hero"><img src="ui/hero.jpg" alt="Vui học lớp 1. Hiện có Tuần 7, Tuần 8 và Tuần 9.">${spk('Chào em! Hiện có Tuần 7, Tuần 8 và Tuần 9. Bé chọn môn Toán, Tiếng Việt, hoặc English cô Huyền nhé!')}</div>
 <div class="grid" style="margin-top:22px">
-<div class="lc" style="background:var(--co)" data-go="toan">${spk('Toán')}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px;display:flex;align-items:center;justify-content:center;font-size:64px">➕</span><div><h3>Toán</h3><div style="font-size:18px">Ôn từng tuần, có hình và chạm để nghe</div></div></div>
-<div class="lc" style="background:var(--gr)" data-go="tv">${spk('Tiếng Việt')}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px;display:flex;align-items:center;justify-content:center;font-size:64px">📖</span><div><h3>Tiếng Việt</h3><div style="font-size:18px">Luyện chữ, luyện vần và đọc bài</div></div></div>
-<div class="lc" style="background:#5c6bc0" data-go="english">${spk('English cô Huyền'+(locked?' cần mã của thầy':''))}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px;display:flex;align-items:center;justify-content:center;font-size:64px">${locked?'🔒':'🇬🇧'}</span><div><h3>English cô Huyền</h3><div style="font-size:18px">${locked?'🔒 Cần mã thầy cấp mới vào được':'Đã mở khóa – vào học với cô Huyền nhé!'}</div></div></div>
+<div class="lc vis" data-go="toan" role="button" aria-label="Toán. Ôn từng tuần, có hình và chạm để nghe">${spk('Toán')}<img src="ui/toan.jpg" alt=""></div>
+<div class="lc vis" data-go="tv" role="button" aria-label="Tiếng Việt. Luyện chữ, luyện vần và đọc bài">${spk('Tiếng Việt')}<img src="ui/tv.jpg" alt=""></div>
+<div class="lc vis" data-go="english" role="button" aria-label="English cô Huyền. ${locked?'Cần mã thầy cấp mới vào được':'Đã mở khóa'}">${spk('English cô Huyền'+(locked?' cần mã của thầy':''))}<img src="ui/english.jpg" alt="">${locked?'':'<span class="badge-ok">Đã mở khóa</span>'}</div>
 </div>`;
 document.querySelectorAll('[data-go]').forEach(c=>c.onclick=()=>{const g=c.dataset.go;if(g==='english')englishOpen();else subject(g)})}
 function subject(mon){location.hash=mon;
