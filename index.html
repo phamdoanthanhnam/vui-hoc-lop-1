@@ -141,6 +141,23 @@ const icm={'máy bay':'plane','đom đóm':'firefly','gối':'pillow','chùm v�
 h+=`<div class="card sec"><h2>3. Nối hình với từ ${spk('Nối hình với từ')}</h2>`+matchBlock(['p:gối','p:máy bay','p:chùm vải','p:đom đóm'],['máy bay','đom đóm','gối','chùm vải'],{'p:máy bay':'máy bay','p:đom đóm':'đom đóm','p:gối':'gối','p:chùm vải':'chùm vải'},(x,s)=>s==='l'?`<span class="ill">${S[icm[x.slice(2)]]}</span>`:x)+'<div class="row">'+Object.keys(icm).map(w=>`<button class="chip" data-say="${w}">🔊 ${w}</button>`).join('')+'</div></div>';
 h+=`<div class="card sec"><h2>4. Điền vần ${spk('Chọn vần đúng')}</h2>`;
 [['shrimp','t…','ôm','ơm','tôm'],['sparrow','ch…','im','em','chim'],['elephant','v…','oi','ôi','voi'],['cloud','m…','ây','ay','mây']].forEach(([k,w,a,b,full])=>{h+=`<div class="row"><span class="ill">${S[k]}</span><span class="eq">${spk(full)} ${w}</span>${spk(a)}${spk(b)}${choice([a,b].sort(),a)}</div>`});
+return h+'</div>'}},
+{t:'Tiếng Việt: Chữ Ph, Qu, V, X, Y',sub:'Tuần 7 – Luyện đọc chữ',c:'#7c4dff',tag:'Tuần 7',ic:'<div style="font-size:64px;line-height:1;text-align:center">🔤</div>',build(){
+let h=`<div class="card sec"><h2>1. Luyện đọc chữ ${spk('Luyện đọc chữ. Phờ, quờ, vờ, xờ, i dài')}</h2><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr))">`;
+[['Ph','phờ'],['ph','phờ'],['Qu','quờ'],['qu','quờ'],['V','vờ'],['v','vờ'],['X','xờ'],['x','xờ'],['Y','i dài'],['y','i dài']].forEach(([ch,name])=>{h+=`<div class="eq" style="text-align:center;font-size:42px">${spk(name+'. '+ch)} ${ch}</div>`});
+h+=`</div></div><div class="card sec"><h2>2. Nối chữ với từ ${spk('Nối chữ với từ')}</h2>`+matchBlock(['Ph','Qu','V','X','Y'],['phở','quả','vá','xe','y tá'],{'Ph':'phở','Qu':'quả','V':'vá','X':'xe','Y':'y tá'})+'</div>';
+h+=`<div class="card sec"><h2>3. Chọn chữ đúng ${spk('Chọn chữ đúng')}</h2>`;
+[['phở','Ph',['Ph','Qu','V']],['quả','Qu',['X','Qu','Y']],['vá','V',['V','Ph','X']],['xe','X',['Y','Qu','X']],['y tá','Y',['V','Y','Ph']]].forEach(([w,a,opts])=>{h+=`<div class="row"><span class="eq">${spk(w+'. Chữ nào?')} ${w}</span>${choice(opts,a)}</div>`});
+h+=`</div><div class="card sec"><h2>4. Đọc từ ${spk('Đọc từ')}</h2><div class="row">`+['phở','pha','phụ','quả','quê','qua','vá','về','vở','xe','xô','xa','y tá'].map(w=>`<button class="chip" data-say="${w}">🔊 ${w}</button>`).join('')+'</div></div>';
+return h}},
+{t:'Toán: Cộng trong phạm vi 6',sub:'Tuần 7 – Đếm và tính',c:'#ff9f43',tag:'Tuần 7',ic:'<div style="font-size:64px;line-height:1;text-align:center">➕</div>',build(){
+let h=`<div class="card sec"><h2>1. Tính nhẩm ${spk('Tính nhẩm')}</h2><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">`;
+[['1+2',3],['2+2',4],['3+1',4],['4+2',6],['5+1',6],['3+2',5],['1+4',5],['2+3',5]].forEach(([e,a])=>{h+=`<div class="eq">${spk(readEq(e)+' bằng mấy?')} ${e} = ${numInput(a)}</div>`});
+h+=`</div></div><div class="card sec"><h2>2. Nối phép tính với kết quả ${spk('Nối phép tính với kết quả đúng')}</h2>`+matchBlock(['1+2','2+2','3+2','3+3'],['3','4','5','6'],{'1+2':'3','2+2':'4','3+2':'5','3+3':'6'})+'</div>';
+h+=`<div class="card sec"><h2>3. Đúng ghi Đ, sai ghi S ${spk('Đúng ghi Đ, sai ghi S')}</h2>`;
+[['2+2=4','Đ'],['3+2=6','S'],['1+4=5','Đ'],['4+3=6','S']].forEach(([e,a])=>{h+=`<div class="row"><span class="eq">${spk(readEq(e)+'. Đúng hay sai?')} ${e}</span>${choice(['Đ','S'],a)}</div>`});
+h+=`</div><div class="card sec"><h2>4. Nhìn tranh, viết phép tính ${spk('Nhìn tranh, viết phép tính')}</h2>`;
+[['apple',2,1,'quả táo'],['orange',3,2,'quả cam'],['butterfly',1,3,'con bướm']].forEach(([k,a,b,n])=>{h+=`<div class="row" style="background:#fffaf0;border-radius:20px;padding:10px">${pics(k,a)}<b style="font-size:34px">+</b>${pics(k,b)}${spk(a+' '+n+' thêm '+b+' '+n+'. Tất cả là mấy '+n+'?')}</div><div class="row eq" style="display:inline-flex">${numInput(a)} + ${numInput(b)} = ${numInput(a+b)}</div>`});
 return h+'</div>'}}];
 // ---------- screens ----------
 function login(){app.innerHTML=`<div class="card login">${bear}<h1 style="color:var(--co);font-size:42px">Vui học lớp 1</h1><p>Ôn tập <b style="color:var(--bl)">Toán</b> và <b style="color:var(--gr)">Tiếng Việt</b> 🌈</p><input id="pw" type="password" placeholder="Mật khẩu" autocomplete="off" aria-label="Mật khẩu"><div class="msg" id="msg"></div><button class="big" id="go">Vào học 🚀</button></div>`;
@@ -148,10 +165,21 @@ const pw=document.getElementById('pw'),go=document.getElementById('go'),msg=docu
 const tryIt=async()=>{const v=pw.value.trim().toLowerCase();if(!v){msg.textContent='Em hãy nhập mật khẩu nhé!';return}
 if(HASHES.has(await sha(v))){sessionStorage.setItem('vh1','1');home();say('Chào mừng em đến với Vui học lớp 1!')}else{msg.textContent='Mật khẩu chưa đúng rồi, em kiểm tra lại nhé!';pw.classList.add('bad');setTimeout(()=>pw.classList.remove('bad'),900)}};
 go.onclick=tryIt;pw.onkeydown=e=>{if(e.key==='Enter')tryIt()};pw.focus()}
-function home(){location.hash='';app.innerHTML=`<div class="top">${bear.replace('width="120"','width="80"')}<div><h1 style="color:var(--co)">Chào em! 👋</h1><p style="margin:0">Hôm nay mình học bài nào nhỉ? ${spk('Chào em! Hôm nay mình học bài nào nhỉ?')}</p></div></div><div class="grid" style="margin-top:18px">`+L.map((l,i)=>`<div class="lc" style="background:${l.c}" data-go="${i}">${spk('Bài '+(i+1)+'. '+l.t)}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px">${l.ic}</span><div><div style="opacity:.9">Bài ${i+1}</div><h3>${l.t}</h3><div style="font-size:18px">${l.sub}</div></div></div>`).join('')+`</div><div style="text-align:center;margin-top:20px"><button class="chip" id="out">Thoát</button></div>`;
-document.querySelectorAll('[data-go]').forEach(c=>c.onclick=()=>lesson(+c.dataset.go));document.getElementById('out').onclick=()=>{sessionStorage.removeItem('vh1');login()}}
+function cardHTML(l,i){return `<div class="lc" style="background:${l.c}" data-go="${i}">${spk((l.tag||('Bài '+(i+1)))+'. '+l.t)}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px">${l.ic}</span><div><div style="opacity:.9">${l.tag||('Bài '+(i+1))}</div><h3>${l.t}</h3><div style="font-size:18px">${l.sub}</div></div></div>`}
+function home(){location.hash='';
+const extra=L.map((l,i)=>({l,i})).filter(x=>!x.l.tag);
+const w7=L.map((l,i)=>({l,i})).filter(x=>x.l.tag==='Tuần 7');
+app.innerHTML=`<div class="top">${bear.replace('width="120"','width="80"')}<div><h1 style="color:var(--co)">Chào em! 👋</h1><p style="margin:0">Hôm nay mình học bài nào nhỉ? ${spk('Chào em! Hôm nay mình học bài nào nhỉ?')}</p></div></div>
+<h2 style="margin:28px 0 12px;font-size:28px">📘 Tuần 7</h2>
+<div class="grid">`+w7.map(x=>cardHTML(x.l,x.i)).join('')+`</div>
+<h2 style="margin:28px 0 12px;font-size:28px">📗 Tuần 8</h2>
+<div class="grid"><div class="lc" style="background:#2ecc71" id="go8">${spk('Ôn tập tuần 8. Toán phạm vi 10 và tiếng Việt vần an, ăn, ân')}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px;display:flex;align-items:center;justify-content:center;font-size:64px">📗</span><div><div style="opacity:.9">Tuần 8</div><h3>Toán và Tiếng Việt</h3><div style="font-size:18px">Cộng trong phạm vi 10 • Vần an, ăn, ân, on, ôn, ơn, en, ên, in, un, am, ăm, âm</div></div></div></div>
+<h2 style="margin:28px 0 12px;font-size:28px">⭐ Ôn thêm</h2>
+<div class="grid">`+extra.map(x=>cardHTML(x.l,x.i)).join('')+`</div>`;
+document.querySelectorAll('[data-go]').forEach(c=>c.onclick=()=>lesson(+c.dataset.go));
+document.getElementById('go8').onclick=()=>location.href='tuan8.html'}
 function lesson(i){const l=L[i];total=0;done=0;const body=l.build();
-app.innerHTML=`<div class="top"><button class="back" id="bk">⬅ Về nhà</button><div class="prog"><div></div></div></div><h1 style="color:${l.c}">Bài ${i+1}: ${l.t} ${spk(l.t)}</h1>`+body;scrollTo(0,0);
+app.innerHTML=`<div class="top"><button class="back" id="bk">⬅ Về nhà</button><div class="prog"><div></div></div></div><h1 style="color:${l.c}">${l.tag||('Bài '+(i+1))}: ${l.t} ${spk(l.t)}</h1>`+body;scrollTo(0,0);
 document.getElementById('bk').onclick=home;if(l.after)l.after();wire(i)}
 function wire(i){
 app.querySelectorAll('input.num').forEach(inp=>{const chk=()=>{if(inp.dataset.d)return;const v=inp.value.trim();if(!v)return;if(v===inp.dataset.ans){inp.classList.remove('bad');inp.classList.add('ok');inp.readOnly=true;inp.dataset.d=1;good();mark()}else{inp.classList.add('bad');bad();setTimeout(()=>{inp.classList.remove('bad');inp.value=''},900)}};
