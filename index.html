@@ -99,7 +99,7 @@ function matchBlock(left,right,pairs,render){total+=left.length;const id='m'+Mat
 return `<div class="match" data-m="${id}" data-pairs='${JSON.stringify(pairs)}'><div>`+left.map(l=>`<button class="chip" data-ml="${l}">${render?render(l,'l'):l}</button>`).join('')+`</div><div>`+right.map(r=>`<button class="chip" data-mr="${r}">${render?render(r,'r'):r}</button>`).join('')+'</div></div><p style="font-size:17px;opacity:.7">Chạm một ô bên trái, rồi chạm ô đúng bên phải.</p>'}
 const SPEAKS={};
 const L=[
-{t:'Toán: Tính nhẩm',sub:'Phép cộng trong phạm vi 10',c:'var(--co)',ic:S.apple,build(){
+{t:'Toán: Tính nhẩm',sub:'Phép cộng trong phạm vi 10',c:'var(--co)',tag:'Tuần 9',ic:S.apple,build(){
 let h=`<div class="card sec"><h2>1. Tính nhẩm ${spk('Tính nhẩm')}</h2><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">`;
 [['2+3',5],['4+1',5],['5+2',7],['1+6',7],['3+3',6],['2+4',6],['4+3',7],['1+5',6]].forEach(([e,a])=>{h+=`<div class="eq">${spk(readEq(e)+' bằng mấy?')} ${e} = ${numInput(a)}</div>`});
 h+=`</div></div><div class="card sec"><h2>2. Nối phép tính với kết quả ${spk('Nối phép tính với kết quả đúng')}</h2>`+matchBlock(['3+4','2+3','4+2','1+3'],['5','7','4','6'],{'3+4':'7','2+3':'5','4+2':'6','1+3':'4'})+'</div>';
@@ -108,7 +108,7 @@ h+=`<div class="card sec"><h2>3. Đúng ghi Đ, sai ghi S ${spk('Đúng ghi Đ, 
 h+=`</div><div class="card sec"><h2>4. Nhìn tranh, viết phép tính ${spk('Nhìn tranh, viết phép tính')}</h2>`;
 [['apple',3,2,'quả táo'],['orange',4,3,'quả cam'],['butterfly',3,3,'con bướm']].forEach(([k,a,b,n])=>{h+=`<div class="row" style="background:#fffaf0;border-radius:20px;padding:10px">${pics(k,a)}<b style="font-size:34px">+</b>${pics(k,b)}${spk(a+' '+n+' thêm '+b+' '+n+'. Tất cả là mấy '+n+'?')}</div><div class="row eq" style="display:inline-flex">${numInput(a)} + ${numInput(b)} = ${numInput(a+b)}</div>`});
 return h+'</div>'}},
-{t:'Toán: Đếm hình và tính',sub:'Hình chữ nhật, hình tam giác',c:'var(--bl)',ic:S.tri,build(){
+{t:'Toán: Đếm hình và tính',sub:'Hình chữ nhật, hình tam giác',c:'var(--bl)',tag:'Tuần 9',ic:S.tri,build(){
 let h=`<div class="card sec"><h2>1. Đố em: Đếm hình ${spk('Đố em, đếm hình')}</h2><div class="row">${S.rect}<span class="eq">${spk('Có bao nhiêu hình chữ nhật?')} Có ${numInput(3)} hình chữ nhật</span></div><div class="row">${S.tri}<span class="eq">${spk('Có bao nhiêu hình tam giác?')} Có ${numInput(2)} hình tam giác</span></div></div>`;
 h+=`<div class="card sec"><h2>2. Tính ${spk('Tính')}</h2><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">`;
 [['4+2',6],['5+1',6],['2+5',7],['3+4',7],['3+3',6],['6+0',6],['0+7',7],['1+6',7]].forEach(([e,a])=>{h+=`<div class="eq">${spk(readEq(e)+' bằng mấy?')} ${e} = ${numInput(a)}</div>`});
@@ -117,7 +117,7 @@ h+=`</div></div><div class="card sec"><h2>3. Đúng ghi Đ, sai ghi S ${spk('Nh�
 h+=`</div><div class="card sec"><h2>4. Số? ${spk('Điền số thích hợp')}</h2>`;
 [[2,3,1],[1,4,2],[0,5,1],[3,2,2],[4,0,3]].forEach(([a,b,c])=>{h+=`<div class="row eq" style="display:flex;width:fit-content;align-items:center;flex-wrap:wrap">${spk(a+' cộng '+b+' bằng mấy? rồi cộng '+c+' bằng mấy?')} <b style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:#FFD93D;color:#2d2a4a">${a}</b> <span class="narr"><i>+${b}</i>→</span> ${numInput(a+b)} <span class="narr"><i>+${c}</i>→</span> ${numInput(a+b+c)}</div>`});
 return h+'</div>'}},
-{t:'Tiếng Việt: Về thăm quê nội',sub:'Đọc, nối câu, điền vần, nghe – viết',c:'var(--gr)',ic:S.house,build(){
+{t:'Tiếng Việt: Về thăm quê nội',sub:'Đọc, nối câu, điền vần, nghe – viết',c:'var(--gr)',tag:'Tuần 9',ic:S.house,build(){
 const sents=['Nhà bà nội của Nhi ở quê.','Kề nhà bà có hai cây cau cao lắm.','Bà nội của Nhi là cô giáo đã nghỉ hưu.','Ngày ngày, bà đi chợ mua đồ về nấu ăn cho cả nhà.','Bà còn ân cần dạy cho Nhi làm bài.','Mỗi lần đưa Nhi đi dạo ven bờ hồ gần nhà, bà lại kể cho Nhi nghe về ngày xưa, về ngày bà còn đi dạy.'];
 let h=`<div class="card sec"><h2>Luyện đọc vần ${spk('Luyện đọc vần')}</h2><div class="row">`+['ui','ưi','ao','eo','au','âu','êu','iu','ưu'].map(v=>`<button class="chip" data-say="${v}">${v}</button>`).join('')+`</div><div class="row">`+['múi khế','thể thao','leo trèo','màu nâu','lều trại','nhỏ xíu'].map(v=>`<button class="chip" style="border-color:var(--gr)" data-say="${v}">${v}</button>`).join('')+`</div></div>`;
 h+=`<div class="card"><h2>📖 Về thăm quê nội ${spk('Về thăm quê nội. '+sents.join(' '))}</h2><p class="pass" id="pass3">`+sents.map(s=>`<span data-say="${s}">${s}</span>`).join(' ')+`</p><p style="font-size:17px;opacity:.7">Chạm vào câu để nghe.</p></div>`;
@@ -132,7 +132,7 @@ b.onclick=()=>{const v=norm(q.value);if(/(hai|2) cây cau|cây cau cao/.test(v))
 q.onkeydown=e=>{if(e.key==='Enter')b.click()};
 document.getElementById('nvb').onclick=()=>{const sp=[...document.querySelectorAll('#nv span')];let i=0;const nx=()=>{sp.forEach(s=>s.classList.remove('hl'));if(i>=sp.length)return;sp[i].classList.add('hl');say(sp[i].textContent,0.7,()=>{i++;setTimeout(nx,1500)})};nx()};
 }},
-{t:'Tiếng Việt: Nhà Hà đi Tam Đảo',sub:'Phiếu 06/11/2026',c:'var(--pu)',ic:S.mountain,build(){
+{t:'Tiếng Việt: Nhà Hà đi Tam Đảo',sub:'Phiếu 06/11/2026',c:'var(--pu)',tag:'Tuần 9',ic:S.mountain,build(){
 const sents=['Nghỉ hè, nhà Hà đi Tam Đảo.','Khi tán cây, ngọn cỏ còn thiu thiu ngủ, Hà đã dậy ngắm mây mù.','Đến trưa, trời như vào thu.','Mùa hè ở Tam đảo quả là dễ chịu.'];
 let h=`<div class="card"><h2>📖 Nhà Hà đi Tam Đảo ${spk(sents.join(' '))}</h2><p class="pass">`+sents.map(s=>`<span data-say="${s}">${s}</span>`).join(' ')+`</p></div>`;
 h+=`<div class="card sec"><h2>1. Nghỉ hè, nhà Hà đi đâu? ${spk('Nghỉ hè, nhà Hà đi đâu?')}</h2>`+['Cồn Sơn','Tam Đảo','Phố cổ'].map(o=>spk(o)).join(' ')+choice(['Cồn Sơn','Tam Đảo','Phố cổ'],'Tam Đảo')+'</div>';
@@ -169,7 +169,7 @@ function inferMon(l){return /^Toán/.test(l.t)?'toan':'tv'}
 function cardHTML(l,i){return `<div class="lc" style="background:${l.c}" data-go="${i}">${spk((l.tag||('Bài '+(i+1)))+'. '+l.t)}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px">${l.ic}</span><div><div style="opacity:.9">${l.tag||('Bài '+(i+1))}</div><h3>${l.t}</h3><div style="font-size:18px">${l.sub}</div></div></div>`}
 function home(){location.hash='';
 const locked=sessionStorage.getItem('vh1en')!=='1';
-app.innerHTML=`<div class="top">${bear.replace('width="120"','width="80"')}<div><h1 style="color:var(--co)">Vui học lớp 1</h1><p style="margin:0">Mỗi tuần thầy cập nhật bài mới. Bé chọn môn học nhé! ${spk('Chào em! Bé chọn môn Toán, Tiếng Việt, hoặc English cô Huyền nhé!')}</p></div></div>
+app.innerHTML=`<div class="top">${bear.replace('width="120"','width="80"')}<div><h1 style="color:var(--co)">Vui học lớp 1</h1><p style="margin:0">Hiện có Tuần 7, Tuần 8 và Tuần 9. Bé chọn môn học nhé! ${spk('Chào em! Hiện có Tuần 7, Tuần 8 và Tuần 9. Bé chọn môn Toán, Tiếng Việt, hoặc English cô Huyền nhé!')}</p></div></div>
 <div class="grid" style="margin-top:22px">
 <div class="lc" style="background:var(--co)" data-go="toan">${spk('Toán')}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px;display:flex;align-items:center;justify-content:center;font-size:64px">➕</span><div><h3>Toán</h3><div style="font-size:18px">Ôn từng tuần, có hình và chạm để nghe</div></div></div>
 <div class="lc" style="background:var(--gr)" data-go="tv">${spk('Tiếng Việt')}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px;display:flex;align-items:center;justify-content:center;font-size:64px">📖</span><div><h3>Tiếng Việt</h3><div style="font-size:18px">Luyện chữ, luyện vần và đọc bài</div></div></div>
@@ -180,13 +180,13 @@ function subject(mon){location.hash=mon;
 const title=mon==='toan'?'Toán':'Tiếng Việt';
 const items=L.map((l,i)=>({l,i})).filter(x=>inferMon(x.l)===mon);
 const w7=items.filter(x=>x.l.tag==='Tuần 7');
-const extra=items.filter(x=>!x.l.tag);
+const extra=items.filter(x=>x.l.tag==='Tuần 9');
 const w8=mon==='toan'?{t:'Số và phép cộng trong phạm vi 10',s:'Đếm, tính, so sánh và thử thách 10 câu'}:{t:'Vần an, ăn, ân đến am, ăm, âm',s:'Luyện vần, đọc từ, nghe chọn, điền từ'};
 const w8bg=mon==='toan'?'#ff9f43':'#7c4dff';
 app.innerHTML=`<div class="top"><button class="back" id="bk">⬅ Về nhà</button><h1 style="color:${mon==='toan'?'var(--co)':'var(--gr)'};margin:0">${title} ${spk(title)}</h1></div>
 <h2 style="margin:24px 0 12px;font-size:26px">📘 Tuần 7</h2><div class="grid">`+w7.map(x=>cardHTML(x.l,x.i)).join('')+`</div>
 <h2 style="margin:24px 0 12px;font-size:26px">📗 Tuần 8</h2><div class="grid"><div class="lc" style="background:${w8bg}" id="go8">${spk('Tuần 8. '+w8.t)}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px;display:flex;align-items:center;justify-content:center;font-size:64px">📗</span><div><div style="opacity:.9">Tuần 8</div><h3>${w8.t}</h3><div style="font-size:18px">${w8.s}</div></div></div></div>
-`+(extra.length?`<h2 style="margin:24px 0 12px;font-size:26px">⭐ Ôn thêm</h2><div class="grid">`+extra.map(x=>cardHTML(x.l,x.i)).join('')+`</div>`:'');
+`+(extra.length?`<h2 style="margin:24px 0 12px;font-size:26px">📙 Tuần 9</h2><div class="grid">`+extra.map(x=>cardHTML(x.l,x.i)).join('')+`</div>`:'');
 document.getElementById('bk').onclick=home;
 document.querySelectorAll('[data-go]').forEach(c=>c.onclick=()=>lesson(+c.dataset.go));
 document.getElementById('go8').onclick=()=>location.href='tuan8.html?mon='+mon}
