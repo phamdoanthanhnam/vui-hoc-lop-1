@@ -163,5 +163,5 @@ m.querySelectorAll('[data-mr]').forEach(b=>b.onclick=()=>{if(b.classList.contain
 if(P[sel.dataset.ml]===b.dataset.mr){sel.classList.remove('sel');sel.classList.add('done');b.classList.add('done');sel=null;good();mark()}else{b.classList.add('wrong');bad();setTimeout(()=>b.classList.remove('wrong'),900)}})});
 }
 function celebrate(){const d=document.createElement('div');d.className='card celebrate';d.innerHTML=`<div class="stars">🌟🎉🌟</div><h1 style="color:var(--co)">Hoan hô! Em đã hoàn thành bài!</h1><button class="big" style="background:var(--gr)">Về trang chủ 🏠</button>`;d.querySelector('button').onclick=home;app.appendChild(d);d.scrollIntoView({behavior:'smooth'});say('Hoan hô! Em đã hoàn thành bài học. Giỏi lắm!')}
-sessionStorage.getItem('vh1')?home():login();
+home();
 </script></body></html>
