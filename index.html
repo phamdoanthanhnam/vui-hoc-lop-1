@@ -165,22 +165,44 @@ const pw=document.getElementById('pw'),go=document.getElementById('go'),msg=docu
 const tryIt=async()=>{const v=pw.value.trim().toLowerCase();if(!v){msg.textContent='Em hãy nhập mật khẩu nhé!';return}
 if(HASHES.has(await sha(v))){sessionStorage.setItem('vh1','1');home();say('Chào mừng em đến với Vui học lớp 1!')}else{msg.textContent='Mật khẩu chưa đúng rồi, em kiểm tra lại nhé!';pw.classList.add('bad');setTimeout(()=>pw.classList.remove('bad'),900)}};
 go.onclick=tryIt;pw.onkeydown=e=>{if(e.key==='Enter')tryIt()};pw.focus()}
+function inferMon(l){return /^Toán/.test(l.t)?'toan':'tv'}
 function cardHTML(l,i){return `<div class="lc" style="background:${l.c}" data-go="${i}">${spk((l.tag||('Bài '+(i+1)))+'. '+l.t)}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px">${l.ic}</span><div><div style="opacity:.9">${l.tag||('Bài '+(i+1))}</div><h3>${l.t}</h3><div style="font-size:18px">${l.sub}</div></div></div>`}
 function home(){location.hash='';
-const extra=L.map((l,i)=>({l,i})).filter(x=>!x.l.tag);
-const w7=L.map((l,i)=>({l,i})).filter(x=>x.l.tag==='Tuần 7');
-app.innerHTML=`<div class="top">${bear.replace('width="120"','width="80"')}<div><h1 style="color:var(--co)">Chào em! 👋</h1><p style="margin:0">Hôm nay mình học bài nào nhỉ? ${spk('Chào em! Hôm nay mình học bài nào nhỉ?')}</p></div></div>
-<h2 style="margin:28px 0 12px;font-size:28px">📘 Tuần 7</h2>
-<div class="grid">`+w7.map(x=>cardHTML(x.l,x.i)).join('')+`</div>
-<h2 style="margin:28px 0 12px;font-size:28px">📗 Tuần 8</h2>
-<div class="grid"><div class="lc" style="background:#2ecc71" id="go8">${spk('Ôn tập tuần 8. Toán phạm vi 10 và tiếng Việt vần an, ăn, ân')}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px;display:flex;align-items:center;justify-content:center;font-size:64px">📗</span><div><div style="opacity:.9">Tuần 8</div><h3>Toán và Tiếng Việt</h3><div style="font-size:18px">Cộng trong phạm vi 10 • Vần an, ăn, ân, on, ôn, ơn, en, ên, in, un, am, ăm, âm</div></div></div></div>
-<h2 style="margin:28px 0 12px;font-size:28px">⭐ Ôn thêm</h2>
-<div class="grid">`+extra.map(x=>cardHTML(x.l,x.i)).join('')+`</div>`;
+const locked=sessionStorage.getItem('vh1en')!=='1';
+app.innerHTML=`<div class="top">${bear.replace('width="120"','width="80"')}<div><h1 style="color:var(--co)">Vui học lớp 1</h1><p style="margin:0">Mỗi tuần thầy cập nhật bài mới. Bé chọn môn học nhé! ${spk('Chào em! Bé chọn môn Toán, Tiếng Việt, hoặc English cô Huyền nhé!')}</p></div></div>
+<div class="grid" style="margin-top:22px">
+<div class="lc" style="background:var(--co)" data-go="toan">${spk('Toán')}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px;display:flex;align-items:center;justify-content:center;font-size:64px">➕</span><div><h3>Toán</h3><div style="font-size:18px">Ôn từng tuần, có hình và chạm để nghe</div></div></div>
+<div class="lc" style="background:var(--gr)" data-go="tv">${spk('Tiếng Việt')}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px;display:flex;align-items:center;justify-content:center;font-size:64px">📖</span><div><h3>Tiếng Việt</h3><div style="font-size:18px">Luyện chữ, luyện vần và đọc bài</div></div></div>
+<div class="lc" style="background:#5c6bc0" data-go="english">${spk('English cô Huyền'+(locked?' cần mã của thầy':''))}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px;display:flex;align-items:center;justify-content:center;font-size:64px">${locked?'🔒':'🇬🇧'}</span><div><h3>English cô Huyền</h3><div style="font-size:18px">${locked?'🔒 Cần mã thầy cấp mới vào được':'Đã mở khóa – vào học với cô Huyền nhé!'}</div></div></div>
+</div>`;
+document.querySelectorAll('[data-go]').forEach(c=>c.onclick=()=>{const g=c.dataset.go;if(g==='english')englishOpen();else subject(g)})}
+function subject(mon){location.hash=mon;
+const title=mon==='toan'?'Toán':'Tiếng Việt';
+const items=L.map((l,i)=>({l,i})).filter(x=>inferMon(x.l)===mon);
+const w7=items.filter(x=>x.l.tag==='Tuần 7');
+const extra=items.filter(x=>!x.l.tag);
+const w8=mon==='toan'?{t:'Số và phép cộng trong phạm vi 10',s:'Đếm, tính, so sánh và thử thách 10 câu'}:{t:'Vần an, ăn, ân đến am, ăm, âm',s:'Luyện vần, đọc từ, nghe chọn, điền từ'};
+const w8bg=mon==='toan'?'#ff9f43':'#7c4dff';
+app.innerHTML=`<div class="top"><button class="back" id="bk">⬅ Về nhà</button><h1 style="color:${mon==='toan'?'var(--co)':'var(--gr)'};margin:0">${title} ${spk(title)}</h1></div>
+<h2 style="margin:24px 0 12px;font-size:26px">📘 Tuần 7</h2><div class="grid">`+w7.map(x=>cardHTML(x.l,x.i)).join('')+`</div>
+<h2 style="margin:24px 0 12px;font-size:26px">📗 Tuần 8</h2><div class="grid"><div class="lc" style="background:${w8bg}" id="go8">${spk('Tuần 8. '+w8.t)}<span class="ill" style="background:rgba(255,255,255,.85);border-radius:24px;width:110px;padding:10px;display:flex;align-items:center;justify-content:center;font-size:64px">📗</span><div><div style="opacity:.9">Tuần 8</div><h3>${w8.t}</h3><div style="font-size:18px">${w8.s}</div></div></div></div>
+`+(extra.length?`<h2 style="margin:24px 0 12px;font-size:26px">⭐ Ôn thêm</h2><div class="grid">`+extra.map(x=>cardHTML(x.l,x.i)).join('')+`</div>`:'');
+document.getElementById('bk').onclick=home;
 document.querySelectorAll('[data-go]').forEach(c=>c.onclick=()=>lesson(+c.dataset.go));
-document.getElementById('go8').onclick=()=>location.href='tuan8.html'}
+document.getElementById('go8').onclick=()=>location.href='tuan8.html?mon='+mon}
+function englishOpen(){location.hash='english';if(sessionStorage.getItem('vh1en')==='1')englishHome();else englishGate()}
+function englishGate(){app.innerHTML=`<div class="card login" style="position:relative">${bear}<h1 style="color:#5c6bc0;font-size:36px">English cô Huyền</h1><p>Mục này đang khóa 🔒<br>Em nhập <b>mã thầy cấp</b> để vào học nhé!</p><input id="pw" type="password" placeholder="Nhập mã" autocomplete="off" aria-label="Mã truy cập"><div class="msg" id="msg"></div><button class="big" id="go" style="background:#5c6bc0">Mở khóa 🔑</button><div style="margin-top:16px"><button class="chip" id="bk2">⬅ Về nhà</button></div></div>`;
+const pw=document.getElementById('pw'),go=document.getElementById('go'),msg=document.getElementById('msg');
+const tryIt=async()=>{const v=pw.value.trim().toLowerCase();if(!v){msg.textContent='Em hãy nhập mã thầy cấp nhé!';return}
+if(HASHES.has(await sha(v))){sessionStorage.setItem('vh1en','1');englishHome();say('Mã đúng rồi! Vào học English với cô Huyền nhé!')}else{msg.textContent='Mã chưa đúng rồi, em kiểm tra lại nhé!';pw.classList.add('bad');setTimeout(()=>pw.classList.remove('bad'),900)}};
+go.onclick=tryIt;pw.onkeydown=e=>{if(e.key==='Enter')tryIt()};document.getElementById('bk2').onclick=home;pw.focus()}
+function englishHome(){app.innerHTML=`<div class="top"><button class="back" id="bk">⬅ Về nhà</button><h1 style="color:#5c6bc0;margin:0">English cô Huyền ${spk('English cô Huyền')}</h1></div><div class="card sec" style="margin-top:20px"><h2>📝 Bài tuần này</h2><p>Khi thầy gửi tài liệu English của cô Huyền, bài học sẽ hiện ở đây. Mỗi tuần cập nhật trên cùng một đường dẫn này.</p></div>`;
+document.getElementById('bk').onclick=home}
+function route(){const h=location.hash.replace(/^#/,'');if(h==='toan'||h==='tv')subject(h);else if(h==='english')englishOpen();else home()}
+window.addEventListener('hashchange',route);
 function lesson(i){const l=L[i];total=0;done=0;const body=l.build();
 app.innerHTML=`<div class="top"><button class="back" id="bk">⬅ Về nhà</button><div class="prog"><div></div></div></div><h1 style="color:${l.c}">${l.tag||('Bài '+(i+1))}: ${l.t} ${spk(l.t)}</h1>`+body;scrollTo(0,0);
-document.getElementById('bk').onclick=home;if(l.after)l.after();wire(i)}
+document.getElementById('bk').onclick=()=>subject(inferMon(l));if(l.after)l.after();wire(i)}
 function wire(i){
 app.querySelectorAll('input.num').forEach(inp=>{const chk=()=>{if(inp.dataset.d)return;const v=inp.value.trim();if(!v)return;if(v===inp.dataset.ans){inp.classList.remove('bad');inp.classList.add('ok');inp.readOnly=true;inp.dataset.d=1;good();mark()}else{inp.classList.add('bad');bad();setTimeout(()=>{inp.classList.remove('bad');inp.value=''},900)}};
 inp.addEventListener('input',()=>{if(inp.value.length>=inp.dataset.ans.length)chk()});inp.addEventListener('keydown',e=>{if(e.key==='Enter')chk()})});
@@ -191,5 +213,5 @@ m.querySelectorAll('[data-mr]').forEach(b=>b.onclick=()=>{if(b.classList.contain
 if(P[sel.dataset.ml]===b.dataset.mr){sel.classList.remove('sel');sel.classList.add('done');b.classList.add('done');sel=null;good();mark()}else{b.classList.add('wrong');bad();setTimeout(()=>b.classList.remove('wrong'),900)}})});
 }
 function celebrate(){const d=document.createElement('div');d.className='card celebrate';d.innerHTML=`<div class="stars">🌟🎉🌟</div><h1 style="color:var(--co)">Hoan hô! Em đã hoàn thành bài!</h1><button class="big" style="background:var(--gr)">Về trang chủ 🏠</button>`;d.querySelector('button').onclick=home;app.appendChild(d);d.scrollIntoView({behavior:'smooth'});say('Hoan hô! Em đã hoàn thành bài học. Giỏi lắm!')}
-home();
+route();
 </script></body></html>
