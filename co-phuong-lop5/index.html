@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Ôn cộng, trừ, nhân, chia số thập phân lớp 5 cùng Thỏ Bông, Gấu Bin và Cô Bích Phượng Tam Bình.">
+<title>Ôn tập số thập phân Lớp 5 – Cô Bích Phượng Tam Bình</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=20261111-sua">
+</head>
+<body>
+<header class="top">
+  <div>
+    <p class="kicker">Cô Bích Phượng Tam Bình</p>
+    <h1>Ôn tập số thập phân Lớp 5</h1>
+  </div>
+  <div class="head-actions">
+    <button type="button" class="icon-btn" id="snd" aria-label="Bật hoặc tắt âm thanh">🔊</button>
+    <button type="button" class="icon-btn" id="homeBtn" aria-label="Về trang chính">Trang chính</button>
+  </div>
+</header>
+<main class="wrap">
+  <section id="screen-home">
+    <div class="card">
+      <div class="hero">
+        <img class="hero-mascot" src="assets/tho-bong.png" alt="Thỏ Bông">
+        <div>
+          <div class="bubble" id="hello">Chào em! Mình là Thỏ Bông, đây là Gấu Bin. Cùng ôn số thập phân lớp 5 với Cô Bích Phượng Tam Bình nhé!</div>
+          <label class="lead" for="name">Tên của em (không bắt buộc)</label>
+          <div class="name-row">
+            <input class="name" id="name" maxlength="24" placeholder="Ví dụ: Minh" aria-label="Tên của em, không bắt buộc" autocomplete="nickname">
+          </div>
+          <div class="pills">
+            <span class="pill">⭐ <span id="homeStars">0</span> sao</span>
+            <span class="pill">8 câu mỗi mức</span>
+          </div>
+        </div>
+        <img class="hero-mascot bear" src="assets/gau-bin.png" alt="Gấu Bin">
+      </div>
+    </div>
+    <div class="card">
+      <h2>Chọn phép tính</h2>
+      <p class="lead">Mỗi phép có hoạt cảnh hướng dẫn, rồi mới làm bài. Em xem xong bấm Làm bài tập.</p>
+      <div class="gates" style="margin-top:12px">
+        <button type="button" class="gate" data-op="add">
+          <span class="gate-ico ico-add" aria-hidden="true">+</span>
+          <span><b>Cộng số thập phân</b><span>3 mức: không nhớ; khác số chữ số ở phần thập phân; có nhớ</span></span>
+        </button>
+        <button type="button" class="gate" data-op="sub">
+          <span class="gate-ico ico-sub" aria-hidden="true">−</span>
+          <span><b>Trừ số thập phân</b><span>3 mức: không nhớ; khác số chữ số ở phần thập phân; có nhớ</span></span>
+        </button>
+        <button type="button" class="gate" data-op="mul">
+          <span class="gate-ico ico-mul" aria-hidden="true">×</span>
+          <span><b>Nhân số thập phân</b><span>3 mức: nhân với số tự nhiên; nhân hai số thập phân; nhân với 10; 100; 1 000 và tổng hợp</span></span>
+        </button>
+        <button type="button" class="gate" data-op="div">
+          <span class="gate-ico ico-div" aria-hidden="true">:</span>
+          <span><b>Chia số thập phân</b><span>5 dạng, mỗi dạng 3 mức từ dễ đến khó</span></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-kinds" hidden>
+    <div class="card">
+      <h2>Chia số thập phân</h2>
+      <p class="lead">Chọn đúng dạng bài. Em sẽ xem hoạt cảnh của dạng đó trước khi luyện.</p>
+      <div class="kinds" id="kindList" style="margin-top:12px"></div>
+      <div class="row" style="margin-top:12px">
+        <button type="button" class="btn gray" id="kindsHome">Về trang chính</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-clip" hidden>
+    <div class="card">
+      <h2 id="clipHeading">Hoạt cảnh</h2>
+      <div id="clipMount"></div>
+    </div>
+  </section>
+
+  <section id="screen-levels" hidden>
+    <div class="card">
+      <h2 id="levelHeading">Chọn mức</h2>
+      <p class="lead" id="levelLead">Mỗi mức có 8 câu, lấy ngẫu nhiên nên mỗi lần vào sẽ khác nhau.</p>
+      <div class="levels" id="levelList" style="margin-top:12px"></div>
+      <div class="row" style="margin-top:12px">
+        <button type="button" class="btn purple" id="rewatch">Xem lại hoạt cảnh</button>
+        <button type="button" class="btn gray" id="levelHome">Về trang chính</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-quiz" hidden>
+    <div class="card" id="qcard">
+      <div class="quiz-top">
+        <span id="qCount">Câu 1/8</span>
+        <span>Đúng <span id="qScore">0</span>/8</span>
+      </div>
+      <div class="bar" style="margin:8px 0 4px"><div id="qBar"></div></div>
+      <p class="prompt" id="prompt"></p>
+      <p class="prompt-sub" id="promptSub"></p>
+      <form id="answerForm" autocomplete="off">
+        <div id="workspace" class="workspace"></div>
+        <div class="row center" style="margin-top:8px">
+          <button class="btn green big" type="submit" id="checkBtn">Kiểm tra</button>
+        </div>
+        <p class="backup"><label for="ans">Hoặc gõ cả đáp án</label>
+          <input id="ans" inputmode="decimal" aria-label="Gõ đáp án nếu chưa điền ô" placeholder="Nhập đáp án" maxlength="14" enterkeyhint="done">
+        </p>
+      </form>
+      <p class="hint">Điền từng chữ số, chạm ô nét đứt để đặt dấu phẩy. Không cần viết số 0 ở đầu, không cần điền hết các ô. Hoặc gõ cả đáp án vào ô phía trên (dùng dấu phẩy, ví dụ 3,5). 3,50 vẫn tính đúng như 3,5.</p>
+      <div class="fb" id="fb" aria-live="polite"></div>
+      <div class="solution" id="solution" hidden></div>
+      <div class="row center" style="margin-top:12px">
+        <button type="button" class="btn blue big" id="nextBtn" hidden>Câu tiếp theo</button>
+        <button type="button" class="btn gray" id="retryBtn">Làm lại</button>
+        <button type="button" class="btn gray" id="quizHome">Về trang chính</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-result" hidden>
+    <div class="card center">
+      <div class="hero">
+        <img class="hero-mascot" src="assets/tho-bong.png" alt="Thỏ Bông">
+        <div>
+          <p class="big-stars" id="rStars" aria-label="Số sao"></p>
+          <h2 id="rTitle"></h2>
+          <p id="rScore" class="lead"></p>
+        </div>
+        <img class="hero-mascot bear" src="assets/gau-bin.png" alt="Gấu Bin">
+      </div>
+      <div id="rMiss"></div>
+      <div class="row center" style="margin-top:12px">
+        <button type="button" class="btn green" id="againBtn">Làm lại</button>
+        <button type="button" class="btn purple" id="otherLevel">Chọn mức khác</button>
+        <button type="button" class="btn blue" id="resultHome">Về trang chính</button>
+      </div>
+    </div>
+  </section>
+</main>
+<aside class="brand-badge" aria-label="Cô Bích Phượng Tam Bình">
+  <strong>Cô Bích Phượng Tam Bình</strong>
+</aside>
+<div id="fx" aria-hidden="true"></div>
+<script src="problems.js?v=20261111-sua"></script>
+<script src="clips.js?v=20261111-sua"></script>
+<script src="app.js?v=20261111-sua"></script>
+</body>
+</html>
